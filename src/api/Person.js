@@ -5,6 +5,7 @@ export const getPersons = graph(`query{
     id,
     name,
     kind,
-    img
+    img,
+    url
   }
 }`);
