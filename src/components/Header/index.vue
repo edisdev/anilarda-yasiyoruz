@@ -1,3 +1,13 @@
+<script>
+import customIcon from 'vue-icon/lib/vue-feather.esm';
+
+export default {
+  components: {
+    customIcon
+  }
+};
+</script>
+
 <template>
   <b-navbar class="Header" toggleable="md" type="dark">
     <b-container>
@@ -18,7 +28,7 @@
           <b-nav-form>
             <b-form-input size="sm" class="mr-sm-2 search-input" type="text" placeholder="Search"/>
             <b-button size="sm" class="my-2 my-sm-0 search-button" type="submit">
-              <span>&#128269;</span>
+              <custom-icon name="search" base-class="custom-icon"/>
             </b-button>
           </b-nav-form>
         </b-navbar-nav>
@@ -31,8 +41,12 @@
 @import '@/assets/scss/variables/index.scss';
 
   .Header {
-    margin-bottom: 40px;
     box-shadow: 2px 5px 10px rgba(#999, 0.2);
+    z-index: 999;
+    background: $app-bg-color;
+    position: fixed;
+    width: 100%;
+    top: 0;
     .navbar-brand {
       color: $color-red !important;
       font-family: 'Pacifico', cursive;
@@ -45,6 +59,7 @@
       color: $app-color;
       background: $app-bg-color;
       border-color: rgba(#999, 0.4);
+      height: 36px;
       &:focus {
         border: 1px solid $app-color;
         box-shadow: none;
@@ -52,8 +67,8 @@
     }
     .search-button {
       border-radius: 50%;
-      width: 31px;
-      height: 31px;
+      width: 36px;
+      height: 36px;
       background-color: $app-color;
       font-size: 9px;
       display: flex;
@@ -61,12 +76,19 @@
       align-items: center;
       position: relative;
       border: none;
-      span {
-        border: 1px solid $app-bg-color;
+      color: $app-bg-color;
+      padding: 3px;
+      position: relative;
+      &::before {
+        content: '';
+        width: 28px;
+        height: 28px;
+        border: 2px solid $app-bg-color;
         border-radius: 50%;
-        display: flex;
-        padding: 2.9px;
-        flex-shrink: 0;
+        position: absolute;
+      }
+      .custom-icon {
+        width: 15px;
       }
     }
   }

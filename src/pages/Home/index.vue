@@ -63,6 +63,7 @@ export default {
 @import '@/assets/scss/variables/index.scss';
 
  .Home {
+   margin-top: 94px;
    .Person {
      &__item {
       position: relative;
