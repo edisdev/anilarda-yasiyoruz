@@ -26,6 +26,7 @@ module.exports = {
       'vue/max-attributes-per-line': 0,
       'import/prefer-default-export': 0,
       'max-len': 0,
+      'no-useless-escape' : 0
     }
   }
 }  

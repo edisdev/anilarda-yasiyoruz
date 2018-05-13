@@ -38,7 +38,7 @@ export default {
                  class="Person__item"
                  v-for="person in smallPersonList"
                  :key="person.id">
-            <router-link to="/" class="Person__item__name">{{ person.name }}</router-link>
+            <router-link :to="{name: 'PersonDetail', params: {personUrl: person.url}}" class="Person__item__name">{{ person.name }}</router-link>
             <img class="Person__item__img" :src="person.img" :alt="person.name">
           </b-col>
         </b-col>
@@ -49,7 +49,7 @@ export default {
                    class="Person__item"
                    v-for="person in bigPersonList"
                    :key="person.id">
-              <router-link to="/" class="Person__item__name">{{ person.name }}</router-link>
+              <router-link :to="{name: 'PersonDetail', params: {personUrl: person.url}}" class="Person__item__name">{{ person.name }}</router-link>
               <img class="Person__item__img" :src="person.img" :alt="person.name">
             </b-col>
           </b-row>

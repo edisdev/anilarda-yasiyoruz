@@ -1,0 +1,1 @@
+export { PersonModel } from './Person';

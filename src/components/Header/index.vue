@@ -1,9 +1,38 @@
 <script>
-import customIcon from 'vue-icon/lib/vue-feather.esm';
+import _ from 'lodash';
+import { mapGetters } from 'vuex';
 
 export default {
-  components: {
-    customIcon
+  data() {
+    return {
+      searchList: {},
+      searchKey: ''
+    };
+  },
+  computed: {
+    ...mapGetters(['Persons']),
+  },
+  methods: {
+    /* eslint-disable space-before-function-paren, func-names */
+    onSearchPerson: _.debounce(function () {
+      if (this.searchKey) {
+        const getIndex = (item, searchKey) => (item.search(searchKey) > -1);
+        const res = this.Persons.data.allPersons.filter(
+          item => getIndex(item.name.toLowerCase(), this.searchKey)
+        );
+        this.searchList = res;
+      }
+    }, 300)
+  },
+  watch: {
+    searchKey() {
+      if (this.searchKey.length === 0) {
+        this.searchList = {};
+      }
+    },
+    $route() {
+      this.searchKey = '';
+    }
   }
 };
 </script>
@@ -25,12 +54,22 @@ export default {
         </b-navbar-nav>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-nav-form>
-            <b-form-input size="sm" class="mr-sm-2 search-input" type="text" placeholder="Search"/>
-            <b-button size="sm" class="my-2 my-sm-0 search-button" type="submit">
-              <custom-icon name="search" base-class="custom-icon"/>
-            </b-button>
-          </b-nav-form>
+          <b-navbar-nav>
+            <li class="nav-item">
+              <router-link class="nav-link new-person" to="/kisi-ekle">Kişi Ekle</router-link>
+            </li>
+          </b-navbar-nav>
+          <div class="search-field">
+            <b-form-input size="sm"
+                          class="mr-sm-2 search-input"
+                          type="text"
+                          v-model="searchKey"
+                          placeholder="Search"
+                          @input="onSearchPerson" />
+            <div class="search-result" v-if="searchList.length > 0">
+              <router-link :to="{name: 'PersonDetail', params: {personUrl: sl.url}}" v-for="sl in searchList" :key="sl.name">{{ sl.name }}</router-link>
+            </div>
+          </div>
         </b-navbar-nav>
       </b-collapse>
     </b-container>
@@ -54,7 +93,40 @@ export default {
     }
     .navbar-nav {
       transform: translateY(3px);
+      .nav-item {
+        .new-person {
+          background: $color-red;
+          color: $app-color;
+          border-radius: 3px;
+          font-size: 14px;
+          margin-right: 7px;
+          transform: translateY(-3px);
+        }
+      }
     }
+    .search-field {
+      position: relative;
+      .search-result {
+        background: #fff;
+        color: $app-bg-color;
+        position: absolute;
+        width: 100%;
+        padding: 7px;
+        a {
+          color: $app-bg-color;
+          text-decoration: none;
+          display: block;
+          padding-top: 5px;
+          padding-bottom: 5px;
+          width: 100%;
+          &:not(:last-child) {
+            border-bottom: 1px solid #ccc;
+          }
+          &:hover {
+            color: $color-red;
+          }
+        }
+      }
     .search-input {
       color: $app-color;
       background: $app-bg-color;
@@ -65,31 +137,6 @@ export default {
         box-shadow: none;
       }
     }
-    .search-button {
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      background-color: $app-color;
-      font-size: 9px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      border: none;
-      color: $app-bg-color;
-      padding: 3px;
-      position: relative;
-      &::before {
-        content: '';
-        width: 28px;
-        height: 28px;
-        border: 2px solid $app-bg-color;
-        border-radius: 50%;
-        position: absolute;
-      }
-      .custom-icon {
-        width: 15px;
-      }
-    }
+   }
   }
 </style>
